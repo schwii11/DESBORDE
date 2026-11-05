@@ -15,15 +15,15 @@ button{cursor:pointer}
 .primary,.intro button,.result button,dialog button{border:1px solid #e9dbff;background:transparent;color:var(--paper);padding:14px 20px;border-radius:40px;font-weight:800}
 .primary,.intro button{background:linear-gradient(120deg,#ff77bd,#9b64ff);border:0;box-shadow:0 10px 35px #ff77bd44}
 .intro canvas{width:50%;max-height:88vh;filter:drop-shadow(0 30px 60px #0008)}
-.connect{display:none;grid-template-columns:1fr 1fr;background:linear-gradient(135deg,#160d21,#39204d);padding:7vw;gap:7vw;align-items:center}
+.connect{display:none;grid-template-columns:1fr 1fr;background:linear-gradient(135deg,#160d21,#39204d);padding:clamp(24px,4vw,64px);gap:clamp(28px,5vw,80px);align-items:center;overflow:auto}
 .connect.active{display:grid}
 .connect h2,.result h2{font-size:clamp(56px,8vw,125px);line-height:.82;letter-spacing:-.07em;margin:4vh 0}
 .session{display:grid;grid-template-columns:auto 1fr;gap:8px 20px;align-items:center;margin-top:40px}
 .session strong{font:700 44px 'Space Mono'}
 .session #mqttStatus{grid-column:1/-1;color:#b5a8bf}
-.qr-card{background:#fdf8ff;color:var(--plum);padding:35px;border-radius:34px;box-shadow:0 30px 80px #0006}
-.qr-card #qr canvas{width:100%!important;height:auto!important}
-.qr-card #qr{min-height:280px;display:grid;place-items:center}.qr-card #qr.loading{font:700 11px 'Space Mono';letter-spacing:.12em;color:#6c5878}
+.qr-card{background:#fdf8ff;color:var(--plum);padding:clamp(18px,2.3vw,30px);border-radius:34px;box-shadow:0 30px 80px #0006;max-height:calc(100vh - 40px);overflow:auto}
+.qr-card #qr canvas{display:block;width:min(240px,100%)!important;height:auto!important;margin:auto}
+.qr-card #qr{min-height:220px;display:grid;place-items:center}.qr-card #qr.loading{font:700 11px 'Space Mono';letter-spacing:.12em;color:#6c5878}
 .qr-card a{display:block;color:var(--plum);font:10px 'Space Mono';word-break:break-all;margin:15px 0}
 .people{display:flex;align-items:center;gap:15px;margin:22px 0}
 .people b{font-size:54px}
