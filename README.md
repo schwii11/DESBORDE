@@ -28,7 +28,21 @@ Cada evento conserva participante, zona, posición, gesto, intensidad, duración
 
 ### MQTT
 
-El broker principal es `wss://test.mosquitto.org:8081`; si no responde, se utiliza `wss://broker.emqx.io:8084/mqtt`. Los temas se organizan bajo `touch-me/v1/{sala}`. Los mensajes son JSON sin retención, incluyen versión y marca temporal, y se limitan aproximadamente a 35 mensajes por segundo.
+La plataforma no contiene brokers públicos ni credenciales escritas en el código. Al abrirla, la pantalla solicita la dirección WSS, el usuario temporal y una clave exclusiva de EMQX. La clave vive solo en memoria durante la pestaña, se borra del formulario al conectar y nunca entra al QR, a la URL, a `localStorage` ni al repositorio. El teléfono recibe por QR únicamente la dirección WSS, el usuario y la sala; la clave se escribe manualmente.
+
+Los temas se organizan bajo `tacto/{usuario}/touch-me/{sala}/#`. Los mensajes no se retienen y contienen solamente un identificador aleatorio de sesión y números del gesto: posición, intensidad, duración, velocidad, dedos, presión e inclinación. El micrófono se analiza localmente y transmite una intensidad numérica, nunca audio. No se envían nombres, fotografías, ubicación, contactos ni datos del dispositivo.
+
+#### Configuración segura en EMQX Cloud
+
+1. Crear un despliegue temporal y copiar su dirección **WebSocket seguro (WSS/TLS)**.
+2. Crear un usuario exclusivo para la sesión con una clave aleatoria que no se use en correo ni en otras cuentas.
+3. En autorización, permitir a ese usuario publicar y suscribirse únicamente a `tacto/{usuario}/#`.
+4. Activar el modo de lista blanca. Si el plan no ofrece ese interruptor, añadir después de la regla anterior una regla para **All Users** que deniegue publicar y suscribirse a `#`.
+5. Probar que `tacto/{usuario}/touch-me/prueba/#` funciona y que un tema ajeno es rechazado.
+6. Antes de compartir capturas, tapar dirección, usuario, clave y códigos QR activos.
+7. Al terminar la presentación, borrar el usuario y el despliegue temporal.
+
+Nunca se debe pegar la clave dentro de los archivos ni publicarla en GitHub Pages. El navegador necesita conocerla para conectarse, por eso una persona debe ingresarla en cada dispositivo durante la sesión.
 
 ### Sonidos y licencia
 
