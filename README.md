@@ -1,40 +1,51 @@
-# ENTRE VIÑETAS
+# TOUCH ME — ¿Cómo suena tu tacto?
 
 ## 1. Concepto
 
-ENTRE VIÑETAS explora la posibilidad de tocar una imagen normalmente encerrada dentro del lenguaje gráfico del manga. Cuando la mano atraviesa la viñeta, el dibujo deja de ser una imagen fija y se convierte en una materia que puede sentirse y escucharse. La obra utiliza ilustraciones originales en blanco, negro y rojo carmín; no contiene personajes, páginas ni fotogramas de obras existentes.
+Touch Me es una experiencia audiovisual donde un pequeño cuerpo transparente descubre sensaciones y emociones mediante el contacto humano. Cada toque produce una huella visual persistente, una interpretación emocional y una nota musical. El personaje comienza casi transparente y en silencio; termina lleno de colores, sonidos y memorias.
 
-Las tres viñetas enfatizan materias distintas: **papel**, **tinta** y **límite**. Deslizar arrastra la tinta, mantener expande una mancha, separar dos dedos abre una grieta, acercarlos comprime las líneas, inclinar desplaza capas y soltar libera gradualmente la tensión. Algunas huellas desaparecen y otras quedan como memoria persistente del contacto.
+El personaje fue construido directamente con Canvas 2D como una criatura gelatinosa con orejas de conejo. No depende de una imagen estática: cuerpo, orejas, ojos, respiración, deformación, transparencia y huellas se dibujan por capas. Las emociones no diagnostican a las personas ni entregan puntos; son reglas poéticas mediante las cuales Touch Me expresa curiosidad, alegría, tranquilidad, confianza, sorpresa, incomodidad y saturación.
 
 ## 2. Funcionamiento
 
-La pantalla principal crea una sala aleatoria y muestra un QR. El teléfono abre `control.html?sala=...` y publica datos reales mediante MQTT sobre WSS. Por defecto intenta `wss://test.mosquitto.org:8081` y, si no responde, utiliza `wss://broker.emqx.io:8084/mqtt`. No se sustituye MQTT con almacenamiento local ni BroadcastChannel.
+La pantalla del computador crea una sala única, muestra un QR y recibe a varios teléfonos mediante MQTT por WebSockets seguros. Cada teléfono conserva un identificador y color de borde; el interior de cada huella representa la sensación. Las fotografías, el audio del micrófono y datos privados no se transmiten. El micrófono envía únicamente intensidad derivada del sonido.
 
-| Gesto | Datos capturados | Imagen | Sonido |
+| Entrada | Datos | Respuesta visual | Respuesta sonora |
 |---|---|---|---|
-| Deslizar | X/Y, velocidad, presión o duración | Arrastra tinta y trazo | Pincel sobre papel |
-| Mantener | Tiempo y presión disponible | Expande mancha y vibración | Pulso grave creciente |
-| Separar dos dedos | Distancia entre `pointerId` | Abre grietas | Papel rasgado |
-| Acercar dos dedos | Distancia entre `pointerId` | Comprime líneas | Papel doblado/crujido |
-| Inclinar | Gamma y beta | Parallax y dirección de partículas | Viento espacializado |
-| Soltar | Fin del contacto | Relajación temporal | Resonancia |
+| Caricia | X/Y, velocidad lenta, duración | Estela rosa difusa | Mi, timbre suave |
+| Toque corto | X/Y, duración breve | Círculo amarillo | Sol, nota juguetona |
+| Presión sostenida | Duración y presión disponible | Mancha violeta creciente | Re largo y tenso |
+| Movimiento brusco | Velocidad alta | Marca concentrada y sobresalto | La/Si♭ repentino |
+| Varios dedos | `pointerId` y cantidad | Huellas simultáneas | Notas superpuestas |
+| Soplido | Intensidad y duración derivadas | Ondas celestes y temblor | Fa aireado |
+| Inclinación | Gamma y beta | Desplazamiento blando | Modificación espacial |
 
-El panel **Mapa del tacto** permite consultar las conexiones y cambiar el sonido y la intensidad de seis asociaciones sin impedir el uso directo de la obra. El teléfono limita mensajes a aproximadamente 30 Hz. Si la presión no es fiable, duración y velocidad construyen la intensidad. La orientación necesita permiso explícito en iOS.
+La presión no existe o no es fiable en muchos teléfonos. Cuando el valor es inexistente o fijo, la interfaz declara `estimada` y usa duración y velocidad; no presenta esa estimación como fuerza física. En iOS, movimiento y micrófono se activan mediante botones para solicitar permiso.
 
-### Sonidos y autoría
+### Memoria
 
-Los ocho archivos WAV fueron sintetizados específicamente para este proyecto mediante `scripts/generate-sounds.mjs`; no contienen grabaciones ni muestras externas. Se entregan para uso académico dentro del proyecto.
+Cada evento conserva participante, zona, posición, gesto, intensidad, duración, emoción, nota y momento. Las huellas nunca desaparecen durante la sesión. Al finalizar se presenta el cuerpo coloreado, zona más tocada, emoción principal, participantes, cronología musical y una frase generada mediante reglas. La memoria visual se descarga como PNG y la secuencia sintetizada como WAV.
 
-| Archivo | Materia sonora |
+### MQTT
+
+El broker principal es `wss://test.mosquitto.org:8081`; si no responde, se utiliza `wss://broker.emqx.io:8084/mqtt`. Los temas se organizan bajo `touch-me/v1/{sala}`. Los mensajes son JSON sin retención, incluyen versión y marca temporal, y se limitan aproximadamente a 35 mensajes por segundo.
+
+### Sonidos y licencia
+
+Los ocho WAV fueron sintetizados originalmente para este proyecto con `scripts/generate-sounds.mjs`. No contienen grabaciones humanas ni muestras externas. Se entregan para uso académico dentro del proyecto.
+
+| Archivo | Función |
 |---|---|
-| `brush.wav` | pincel sobre papel |
-| `fold.wav` | papel doblado |
-| `tear.wav` | papel rasgado |
-| `drop.wav` | gota de tinta interpretada |
-| `breath.wav` | respiración abstracta sintetizada |
-| `pulse.wav` | pulso grave |
-| `wind.wav` | viento |
-| `resonance.wav` | resonancia y liberación |
+| `soft.wav` | contacto suave |
+| `gel.wav` | deformación gelatinosa |
+| `pop.wav` | sorpresa/toque breve |
+| `tension.wav` | presión prolongada |
+| `air.wav` | soplido interpretado |
+| `flutter.wav` | cosquillas y orejas |
+| `limit.wav` | incomodidad y límite |
+| `memory.wav` | resonancia de memoria |
+
+Las notas musicales se producen en tiempo real con Web Audio API y cambian según gesto, zona corporal, posición e intensidad.
 
 ### Ejecutar y publicar
 
@@ -45,20 +56,22 @@ pnpm dev
 pnpm build
 ```
 
-Vite utiliza `base: './'`, por lo que `dist/` puede publicarse en GitHub Pages dentro de un repositorio de proyecto. La experiencia requiere HTTPS para sensores en teléfonos.
+Vite utiliza rutas relativas (`base: './'`) y genera `dist/`, compatible con GitHub Pages. La experiencia publicada necesita HTTPS para micrófono y sensores.
 
-### Comprobaciones físicas pendientes
+### Pruebas físicas pendientes
 
-- [ ] Conexión entre computador y teléfono mediante redes distintas.
-- [ ] Multitouch real de dos dedos en Android y Safari iOS.
-- [ ] Permiso y rango de orientación en ambos sistemas.
-- [ ] Diferencias reales de presión entre dispositivos.
-- [ ] Superposición de los ocho audios sin cortes.
-- [ ] Rendimiento de partículas en un teléfono y computador de gama media.
-- [ ] Descarga PNG en navegadores móviles y de escritorio.
+- [ ] Dos o más teléfonos conectados simultáneamente desde redes distintas.
+- [ ] Multitouch y presión real/estimada en Android y Safari iOS.
+- [ ] Permiso de orientación en iPhone.
+- [ ] Micrófono sin transmisión de audio y umbral adecuado para soplidos.
+- [ ] Superposición y paneo de notas sin saturación audible.
+- [ ] Rendimiento después de cientos de huellas.
+- [ ] Descargas PNG y WAV en navegadores de escritorio y móviles.
 
 ## 3. Reflexión
 
-La traducción propuesta vuelve visibles la posición, duración, cantidad de contactos y orientación, y convierte esos datos en deformación, rastro y sonido. El sistema no reproduce temperatura, textura real, resistencia ni fuerza muscular; tampoco puede garantizar una medición uniforme de presión entre teléfonos. Por eso la duración funciona como alternativa declarada, no como si fuera presión física.
+Touch Me permite observar que un contacto digital no es solamente una coordenada: también tiene duración, velocidad, repetición, simultaneidad y una historia previa. La misma cosquilla puede producir alegría al comienzo e incomodidad después de repetirse. La memoria acumulativa vuelve visible que tocar modifica un cuerpo y que ese cuerpo puede expresar límites.
 
-Como mejoras se podría incorporar un modelo de papel con malla elástica ligera para que las grietas respondan con mayor continuidad y un motor de audio granular que transforme los WAV sin multiplicar reproducciones. También sería importante probar la pieza con participantes reales para ajustar sensibilidad, legibilidad y cansancio, y desarrollar perfiles de rendimiento que reduzcan partículas automáticamente. Estas son propuestas de diseño: todavía no se afirman resultados de pruebas con usuarios.
+Quedan fuera la temperatura real, textura, humedad, resistencia, intención y contexto afectivo. El micrófono tampoco mide frío o calor: los representa simbólicamente mediante intensidad y duración del aire. Las emociones del personaje son decisiones de diseño, no inferencias psicológicas sobre quienes participan.
+
+Como mejoras se debería calibrar la interacción mediante pruebas físicas consentidas en varios teléfonos y desarrollar umbrales de micrófono adaptativos al ruido ambiental. También sería útil guardar sesiones en almacenamiento persistente con consentimiento, incorporar una síntesis granular más expresiva y mejorar la deformación mediante una malla elástica ligera. No se inventan resultados de pruebas que todavía no se han realizado.
