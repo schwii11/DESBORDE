@@ -26,7 +26,7 @@ button{font:inherit;color:inherit}
 .reveal{position:absolute;right:28px;bottom:28px;border:1px solid #ffffff55;border-radius:50%;width:112px;height:112px;background:#050505aa;backdrop-filter:blur(9px);font:10px DM Mono;letter-spacing:.12em;cursor:pointer;transition:opacity .7s,background .3s}
 .reveal:hover{background:var(--red)}
 .reveal i{display:block;width:18px;height:1px;background:#fff;margin:9px auto}
-.final{position:absolute;inset:0;padding:7vw;background:linear-gradient(90deg,#050505f0 0,#050505c0 45%,transparent 78%);transition:opacity 1s;display:flex;flex-direction:column;justify-content:center;align-items:flex-start}
+.final{position:absolute;inset:0 auto 0 0;width:44%;padding:5vw 4vw;background:linear-gradient(90deg,#050505f7 0,#050505e8 78%,#05050535 100%);border-right:1px solid #ffffff18;transition:opacity 1s;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;z-index:8}
 .final h2{font:500 italic clamp(50px,8vw,120px)/.82 'Playfair Display';max-width:780px;margin:3vh 0 6vh}
 .final-grid{display:flex;gap:55px;border-top:1px solid var(--line);padding-top:18px}
 .final-grid b{display:block;font:300 28px DM Mono}
@@ -43,7 +43,7 @@ button{font:inherit;color:inherit}
 .manifesto button{margin-top:24px}
 .legend{display:none}
 .reveal{width:84px;height:84px}
-.final{padding:28px;background:#050505df}
+.final{inset:0;width:100%;padding:28px;background:linear-gradient(0deg,#050505f8,#050505bd 70%,#05050545)}
 .final-grid{gap:18px;flex-wrap:wrap}
 .final-actions{flex-direction:column;gap:5px}
 }
