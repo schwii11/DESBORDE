@@ -96,4 +96,6 @@ dialog#brokerSetup::backdrop{background:#0d0712e8;backdrop-filter:blur(10px)}
 #brokerForm input{width:100%;border:1px solid #e7d5ff55;border-radius:12px;background:#ffffff0c;color:#fff;padding:13px;font:14px 'Space Mono',monospace;outline:none}
 #brokerForm input:focus{border-color:#b98cff;box-shadow:0 0 0 3px #b98cff22}
 #brokerError{min-height:1.4em;color:#ff91b8;font:12px 'Space Mono',monospace}
+.mobile dialog#brokerSetup[open]{position:fixed;z-index:1000;top:max(68px,env(safe-area-inset-top));left:14px;right:14px;bottom:auto;margin:0;width:auto;max-height:calc(100dvh - 96px - env(safe-area-inset-bottom));overflow:auto;padding:22px;border-radius:22px;box-shadow:0 18px 70px #09030df2}
+.mobile dialog#brokerSetup h2{font-size:28px;margin:8px 0}.mobile dialog#brokerSetup>p{font-size:13px;line-height:1.4}.mobile #brokerForm{gap:10px}.mobile #brokerForm input{padding:11px}.mobile #brokerForm button{margin-top:4px}
 
