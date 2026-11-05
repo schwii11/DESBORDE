@@ -1,8 +1,8 @@
 import QRCode from'qrcode';
 import{room,topic,send,makeBroker,configureTopic,clamp,zones,participantColors,noteFor,download}from'./shared.js';
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-let getClient,ctxAudio,muted=false,master=.65,sensitivity=1,recovery=.45,started=0,lastSound=0,mouseDown=false;
-const state={marks:[],events:[],participants:new Map(),emotion:'curiosidad',energy:0,comfort:.25,stress:0,tilt:{x:0,y:0},expression:0};
+let getClient,ctxAudio,muted=false,master=.65,sensitivity=1,recovery=.45,started=0,lastSound=0,mouseDown=false,lastFrame=0;
+const state={marks:[],events:[],participants:new Map(),emotion:'curiosidad',energy:0,comfort:.25,stress:0,tilt:{x:0,y:0},targetTilt:{x:0,y:0},expression:0,blow:0};
 
 $('#roomCode').textContent=room.toUpperCase();
 $('#brokerForm').onsubmit=e=>{e.preventDefault();const url=$('#brokerUrl').value.trim(),username=$('#brokerUser').value.trim(),password=$('#brokerPass').value;try{configureTopic(username);getClient=makeBroker(c=>{c.on('connect',()=>{c.subscribe(`${topic}/#`);$('#mqttStatus').textContent='● MQTT CONECTADO';$('#mqttStatus').style.color='#7bf0bd';$('#brokerSetup').close();$('#brokerPass').value=''});c.on('reconnect',()=>$('#mqttStatus').textContent='● RECONECTANDO');c.on('error',()=>$('#brokerError').textContent='No se pudo conectar. Revisa dirección, usuario, clave y permisos.');c.on('message',(t,b)=>{try{handle(JSON.parse(b.toString()))}catch{}})},{url,username,password});const link=new URL('control.html',location.href);link.searchParams.set('sala',room);link.searchParams.set('broker',url);link.searchParams.set('user',username);$('#mobileLink').href=link;$('#mobileLink').textContent=link.href;$('#qr').replaceChildren();QRCode.toCanvas(link.href,{width:330,margin:1,color:{dark:'#21132e',light:'#fff9ff'}},(_,c)=>c&&$('#qr').append(c))}catch(err){$('#brokerError').textContent=err.message}};
@@ -22,8 +22,9 @@ $('#participantList').innerHTML=[...state.participants.values()].map(p=>`<span c
 function handle(m){if(!m||typeof m!=='object'||typeof m.device!=='string')return;if(m.type==='presence'){const p=participant(m.device);
 send(getClient(),'assign',{device:m.device,index:[...state.participants.keys()].indexOf(m.device)});
 send(getClient(),'phase',{phase:'experience'});
-return}if(m.type==='tilt'){state.tilt={x:clamp(m.gamma/40,-1,1),y:clamp(m.beta/60,-1,1)};
-return}if(m.type==='mic'){const p=participant(m.device);
+if(!$('#experience').classList.contains('active')){started||=Date.now();show('experience')}
+return}if(m.type==='tilt'){state.targetTilt={x:clamp(Number(m.gamma)/32,-1,1),y:clamp(Number(m.beta)/38,-1,1)};
+return}if(m.type==='mic'){const p=participant(m.device);state.blow=Math.max(state.blow,clamp(Number(m.intensity)));
 apply({device:p.id,name:p.name,color:p.color,x:.5,y:.2,intensity:clamp(Number(m.intensity)),duration:clamp(Number(m.duration),0,5000),velocity:0,fingers:0,kind:'soplido'});
 return}if(m.type==='touch'){const p=participant(m.device);
 const kind=['toque','caricia','presion','brusco'].includes(m.kind)?m.kind:'toque';apply({...m,kind,x:clamp(Number(m.x)),y:clamp(Number(m.y)),intensity:clamp(Number(m.intensity)),duration:clamp(Number(m.duration),0,5000),velocity:clamp(Number(m.velocity),0,10),fingers:clamp(Number(m.fingers),0,10),color:p.color,name:p.name})}}
@@ -49,7 +50,7 @@ state.emotion=emotion;
 state.expression=1;
 const mark={x:g.x,y:g.y,r:14+g.intensity*55*(g.fingers>1?1.25:1),alpha:.38+g.intensity*.48,inner:sensation[type],border:p.color,type,participant:p.id};
 state.marks.push(mark);
-if(state.marks.length>650)state.marks.splice(0,50);
+if(state.marks.length>90)state.marks.splice(0,10);
 const event={t:Date.now(),dt:started?Date.now()-started:0,participant:p.id,name:p.name,color:p.color,zone,type,intensity:g.intensity,duration:g.duration,emotion,note,x:g.x,y:g.y};
 state.events.push(event);
 $('#lastGesture').textContent=`${p.name} · ${type} · ${zone}`;
@@ -173,18 +174,19 @@ c.beginPath();
 c.arc(cx-100,h*.22,24,Math.PI*1.1,Math.PI*1.7);
 c.stroke();
 c.restore()}
-function loop(t){state.energy*=.9985;
+function loop(t){if(t-lastFrame<32){requestAnimationFrame(loop);return}lastFrame=t;state.energy*=.997;
 state.stress=clamp(state.stress-recovery*.00008);
 state.comfort*=.9998;
 state.expression*=.98;
+state.blow*=.88;state.tilt.x+=(state.targetTilt.x-state.tilt.x)*.16;state.tilt.y+=(state.targetTilt.y-state.tilt.y)*.16;
 bunnyCute(ctx,canvas.clientWidth,canvas.clientHeight,t);
-bunnyCute(ictx,intro.width,intro.height,t,[]);
+if($('#intro').classList.contains('active'))bunnyCute(ictx,intro.width,intro.height,t,[]);
 $('#emotionName').textContent=state.emotion.toUpperCase();
 requestAnimationFrame(loop)}
 function bunnyCute(c,w,h,t,marks=state.marks){c.clearRect(0,0,w,h);
-const cx=w/2,emo=state.emotion,stress=emo==='saturación'||emo==='incomodidad',joy=emo==='alegría'||emo==='confianza',surprise=emo==='sorpresa',bounce=Math.sin(t*.0022)*4,earDrop=stress?.55:joy?-.08:0;
+const cx=w/2,emo=state.emotion,stress=emo==='saturación'||emo==='incomodidad',joy=emo==='alegría'||emo==='confianza',surprise=emo==='sorpresa',bounce=Math.sin(t*.0022)*4,earDrop=(stress?.55:joy?-.08:0)-state.blow*.18;
 c.save();
-c.translate(state.tilt.x*12,state.tilt.y*6+bounce);
+c.translate(state.tilt.x*55,state.tilt.y*24+bounce-state.blow*15);c.rotate(state.tilt.x*.12);
 const glass=c.createRadialGradient(cx-90,h*.32,18,cx,h*.58,h*.55);
 glass.addColorStop(0,'rgba(255,255,255,.5)');
 glass.addColorStop(.28,'rgba(222,202,255,.18)');
