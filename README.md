@@ -18,7 +18,7 @@ Cada intervención permanece en la escena y pasa a formar parte de una memoria s
 2. Selecciona **Conectar teléfono**.
 3. Escanea el código QR con la cámara del teléfono.
 4. Espera hasta que ambas pantallas indiquen que están conectadas.
-5. Desliza uno o dos dedos sobre la superficie táctil. Los botones inferiores permiten activar la inclinación y el soplido cuando el navegador solicite permiso.
+5. Elige **Filamento**, **Volumen** o **Membrana** y toca la superficie. Los botones inferiores permiten activar inclinación y soplido cuando el navegador solicite permiso.
 6. Después de crear al menos tres huellas se habilita **Revelar**, que recorre la pieza y presenta su archivo final.
 
 Computador y teléfono comparten una sala aleatoria mediante MQTT sobre WSS. Los temas se mantienen dentro de `tacto/desborde/{sala}/#`, por lo que un usuario autorizado solamente para `tacto/#` puede operar la obra. El teléfono transmite solamente números asociados al gesto; nunca envía grabaciones, imágenes, nombres, ubicación ni contenido del micrófono.
@@ -38,7 +38,7 @@ Computador y teléfono comparten una sala aleatoria mediante MQTT sobre WSS. Los
 
 ### Sonidos y autoría
 
-La plataforma utiliza seis identidades sonoras: **hilo suave, hilo tenso, fragmento, volumen, velo y aire**. Todas fueron programadas específicamente para DESBORDE con Web Audio API mediante osciladores, ruido sintetizado, filtros, envolventes, paneo, compresión y retardo. Son de autoría propia y no utilizan grabaciones ni muestras externas.
+La plataforma utiliza ocho identidades sonoras: **hilo suave, hilo tenso, fragmento, volumen, resonancia, velo, aire y ruptura**. Todas fueron programadas específicamente para DESBORDE con Web Audio API mediante osciladores, ruido sintetizado, filtros, envolventes, paneo, compresión y retardo. Son de autoría propia y no utilizan grabaciones ni muestras externas.
 
 La intensidad, duración y posición del gesto modifican frecuencia, timbre, amplitud y ubicación estéreo. De esta manera el sonido no funciona como acompañamiento, sino como otra manifestación de la misma acción táctil.
 
@@ -51,6 +51,18 @@ La intensidad, duración y posición del gesto modifican frecuencia, timbre, amp
 - Cantidad de dedos.
 - Inclinación en los ejes beta y gamma.
 - Intensidad numérica del soplido, calculada localmente sin transmitir audio.
+
+### Colaboración, revelación y exportación
+
+Cada teléfono recibe un identificador efímero y puede elegir cualquiera de los tres materiales. El computador mantiene la escultura principal, recibe eventos de varios participantes, rechaza secuencias duplicadas y retira de la cuenta los dispositivos que dejan de enviar presencia. La paleta permanece unificada en negro, carmesí, plata y blanco para que la autoría colectiva no fragmente la composición.
+
+La obra evoluciona gradualmente por **Contención**, **Tensión** y **Desborde**. La revelación final se organiza en cuatro actos verificables: Silencio, Revelación, Memoria y Archivo. Puede omitirse y repetirse.
+
+Las exportaciones disponibles son reales: una imagen PNG del lienzo WebGL y un archivo JSON con sesión, participantes, recuentos y eventos cronológicos. La exportación WAV todavía no está implementada y por eso no aparece como botón.
+
+### Rendimiento y modo de prueba
+
+El panel **Materia / Calidad** permite seleccionar calidad baja, media o alta. La baja reduce resolución y partículas; la alta conserva mayor densidad de píxeles. El modo mouse usa el mismo sistema de filamentos, volúmenes y membranas que los teléfonos, permitiendo comprobar la experiencia sin hardware móvil. El indicador FPS es una medición en tiempo real y no una cifra simulada.
 
 ## Reflexión
 

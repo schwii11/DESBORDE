@@ -1,25 +1,25 @@
 <!doctype html>
-<html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#050505"><title>DESBORDE — El cuerpo no tiene una forma definitiva</title><link rel="stylesheet" href="styles.css"></head>
+<html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080808"><meta name="description" content="DESBORDE: instalación audiovisual de cuerpo, tacto, materia y sonido"><title>DESBORDE — El cuerpo no tiene una forma definitiva</title><link rel="stylesheet" href="styles.css"></head>
 <body>
   <main id="app">
-    <canvas id="scene" aria-label="Escultura corporal interactiva"></canvas>
-    <div class="grain"></div>
+    <canvas id="scene" aria-label="Escultura corporal interactiva"></canvas><div class="grain"></div>
+    <section id="loader" class="loader"><span>DESBORDE</span><i></i><small>CARGANDO MATERIA</small></section>
     <section id="presence" class="presence">
-      <p class="kicker">EXPERIENCIA AUDIOVISUAL · 2026</p>
-      <h1>DES<br><em>BORDE</em></h1>
-      <div class="manifesto"><p>El cuerpo no tiene<br>una forma definitiva.</p><button id="enter">TOCA PARA TRANSFORMARLO <span>↗</span></button></div>
+      <p class="kicker">INSTALACIÓN DIGITAL · CUERPO / MATERIA / SONIDO</p>
+      <div class="threshold-index"><b>I</b><span>UMBRAL</span></div>
+      <h1>DES<em>BORDE</em></h1>
+      <div class="manifesto"><p>EL CUERPO NO TIENE<br>UNA FORMA DEFINITIVA.</p><small>Una experiencia sobre la transformación del cuerpo a través del tacto, la materia y el sonido.</small><button id="enter">ENTRAR EN LA EXPERIENCIA <span>↗</span></button></div>
     </section>
-    <header id="hud" class="hud hidden"><strong>DESBORDE</strong><div><span id="phase">PRESENCIA</span><span id="fps">— FPS</span></div></header>
-    <aside id="legend" class="legend hidden"><p>UN DEDO <b>HILO</b></p><p>MANTENER <b>VOLUMEN</b></p><p>DOS DEDOS <b>VELO</b></p><p>INCLINAR <b>GIRO SONORO</b></p><p>SOPLAR <b>AIRE</b></p></aside>
-    <div id="counter" class="counter hidden"><b id="gestureCount">000</b><span>HUELLAS</span></div>
-    <button id="connectPhone" class="connect-phone hidden">CONECTAR TELÉFONO</button>
+    <header id="hud" class="hud hidden"><strong>DESBORDE</strong><div><span id="chapter">II · PRESENCIA</span><span id="phase">CONTENCIÓN</span><span id="fps">— FPS</span></div></header>
+    <aside id="legend" class="legend hidden"><p>DESLIZAR <b>FILAMENTO</b></p><p>MANTENER <b>VOLUMEN</b></p><p>DOS DEDOS <b>MEMBRANA</b></p><p>INCLINAR <b>GIRO SONORO</b></p><p>SOPLAR <b>AIRE</b></p></aside>
+    <div id="counter" class="counter hidden"><b id="gestureCount">000</b><span>HUELLAS</span><small><i id="participantDot"></i><b id="participantCount">0</b> PARTICIPANTES</small></div>
+    <nav id="experienceNav" class="experience-nav hidden" aria-label="Controles de experiencia"><button id="connectPhone">CONECTAR TELÉFONO</button><button id="openStudio">MATERIA / CALIDAD</button><button id="soundToggle">SONIDO ON</button><button id="helpToggle">INSTRUCCIONES</button></nav>
     <button id="reveal" class="reveal hidden" disabled title="Crea al menos tres huellas para revelar">REVELAR <i></i></button>
-    <section id="connectPanel" class="connect-panel hidden"><button id="closeConnect" aria-label="Cerrar">×</button><p class="kicker">CONTROL REMOTO</p><h2>Usa tu teléfono<br>como materia.</h2><div id="qr"></div><a id="mobileLink"></a><p><i id="mqttDot"></i><span id="mqttState">CONECTANDO</span> · SALA <b id="roomCode"></b></p></section>
-    <section id="final" class="final hidden"><p class="kicker">ARCHIVO DEL GESTO</p><h2 id="pieceName">TENSIÓN EN EXPANSIÓN</h2><div class="final-grid"><div><b id="materialCount">0</b><span>MATERIALES</span></div><div><b id="soundCount">0</b><span>EVENTOS SONOROS</span></div><div><b id="dominantGesture">HILO</b><span>GESTO DOMINANTE</span></div></div><div class="final-actions"><button id="replay">REPRODUCIR MEMORIA</button><button id="export">EXPORTAR IMAGEN</button><button id="return">VOLVER A LA OBRA</button></div></section>
+    <section id="studioPanel" class="studio-panel hidden"><button class="panel-close" data-close="studioPanel" aria-label="Cerrar">×</button><p class="kicker">LABORATORIO</p><h2>La materia<br>recuerda.</h2><label>MATERIAL DEL MOUSE</label><div class="segmented" id="desktopMaterials"><button data-material="auto" class="active">GESTO</button><button data-material="filamento">FILAMENTO</button><button data-material="volumen">VOLUMEN</button><button data-material="membrana">MEMBRANA</button></div><label>CALIDAD GRÁFICA</label><div class="segmented" id="quality"><button data-quality="low">BAJA</button><button data-quality="medium" class="active">MEDIA</button><button data-quality="high">ALTA</button></div><p>El modo mouse utiliza el mismo motor material que el teléfono. Arrastra para construir y mantén para acumular.</p></section>
+    <section id="helpPanel" class="studio-panel help-panel hidden"><button class="panel-close" data-close="helpPanel" aria-label="Cerrar">×</button><p class="kicker">CÓMO TOCAR</p><h2>Tu gesto<br>es estructura.</h2><ol><li>Conecta uno o más teléfonos mediante el QR.</li><li>Elige una materia en el control móvil.</li><li>Desliza, mantén o separa dos dedos sobre el cuerpo.</li><li>Inclina el teléfono o sopla para alterar la gravedad.</li><li>Cuando exista materia suficiente, presiona REVELAR.</li></ol><p>Si tu equipo no entrega presión física, DESBORDE la aproxima mediante duración y velocidad.</p></section>
+    <section id="connectPanel" class="connect-panel hidden"><button id="closeConnect" aria-label="Cerrar">×</button><p class="kicker">CONTROL REMOTO</p><h2>Usa tu teléfono<br>como materia.</h2><div id="qr"></div><a id="mobileLink"></a><p><i id="mqttDot"></i><span id="mqttState">CONECTANDO</span> · SALA <b id="roomCode"></b></p><small>Escanea el QR desde cada teléfono. Todos intervienen la misma escultura.</small></section>
+    <section id="revealAct" class="reveal-act hidden"><b id="actNumber">ACTO 01</b><span id="actName">SILENCIO</span><button id="skipReveal">OMITIR RECORRIDO</button></section>
+    <section id="final" class="final hidden"><p class="kicker">IV · REVELACIÓN / ARCHIVO DEL GESTO</p><h2 id="pieceName">TENSIÓN EN EXPANSIÓN</h2><div class="final-grid"><div><b id="materialCount">0</b><span>MATERIALES</span></div><div><b id="soundCount">0</b><span>EVENTOS SONOROS</span></div><div><b id="dominantGesture">HILO</b><span>GESTO DOMINANTE</span></div><div><b id="finalParticipants">1</b><span>PARTICIPANTES</span></div></div><div class="final-actions"><button id="replay">REPRODUCIR MEMORIA</button><button id="export">EXPORTAR PNG</button><button id="exportJson">EXPORTAR JSON</button><button id="return">VOLVER A LA OBRA</button></div></section>
   </main>
-  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"}}</script>
-  <script src="config.js"></script>
-  <script src="vendor/mqtt.min.js"></script>
-  <script src="vendor/qrcode.min.js"></script>
-  <script type="module" src="app.js"></script>
+  <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"}}</script><script src="config.js"></script><script src="vendor/mqtt.min.js"></script><script src="vendor/qrcode.min.js"></script><script type="module" src="app.js"></script>
 </body></html>
