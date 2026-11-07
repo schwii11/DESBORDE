@@ -6,7 +6,7 @@
 
 ## Concepto
 
-DESBORDE es una plataforma audiovisual donde el tacto construye materia alrededor de un cuerpo. La mano no activa botones aislados: su posición, trayectoria, duración, cantidad de dedos y fuerza aproximada modifican simultáneamente la imagen y el sonido. Deslizar tensa fibras, mantener acumula volumen, tocar con dos dedos abre membranas, inclinar desestabiliza el cuerpo y soplar mueve las capas más livianas.
+DESBORDE es una plataforma audiovisual donde el tacto construye materia alrededor de un cuerpo. La mano no activa botones aislados: su posición, trayectoria, duración, cantidad de dedos y fuerza aproximada modifican simultáneamente la imagen y el sonido. Deslizar tensa familias de filamentos, mantener acumula volumen, tocar con dos dedos abre membranas plisadas y soplar mueve las capas más livianas.
 
 Cada intervención permanece en la escena y pasa a formar parte de una memoria sonora. El resultado no es una figura prediseñada, sino un archivo irrepetible del contacto. La obra propone entender el cuerpo como algo que se construye, se deforma y desborda según las fuerzas que recibe.
 
@@ -32,7 +32,6 @@ Computador y teléfono comparten una sala aleatoria mediante MQTT sobre WSS. Los
 | Toque breve | Deposita un fragmento pequeño | Ataque corto y seco | Incluso un contacto mínimo deja materia |
 | Mantener presionado | Genera un volumen que crece | Pulso grave sostenido | La duración produce acumulación |
 | Dos dedos | Abre una membrana translúcida | Fricción de velo | La suma de contactos expande el cuerpo |
-| Inclinación del teléfono | Gira y desequilibra la figura | Modifica la percepción espacial del conjunto | El cuerpo pierde su estabilidad frente al movimiento |
 | Soplido al micrófono | Agita las membranas y desplaza capas | Ruido de aire filtrado | Una fuerza invisible también transforma la materia |
 | Revelar | Ilumina y recorre la escultura terminada | Permite reproducir la memoria de los eventos | La acumulación se convierte en archivo |
 
@@ -49,7 +48,6 @@ La intensidad, duración y posición del gesto modifican frecuencia, timbre, amp
 - Velocidad del desplazamiento.
 - Presión cuando el dispositivo la entrega; en equipos sin presión se aproxima mediante duración y velocidad.
 - Cantidad de dedos.
-- Inclinación en los ejes beta y gamma.
 - Intensidad numérica del soplido, calculada localmente sin transmitir audio.
 
 ### Colaboración, revelación y exportación

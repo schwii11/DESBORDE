@@ -58,4 +58,5 @@ button{font:inherit;color:inherit}
 .mobile-materials{flex:0 0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin:0 0 9px}.mobile-materials button{padding:8px 3px;font-size:7px}.mobile-metrics{gap:8px;flex-wrap:wrap}.mobile-metrics span:first-child{margin-right:auto}.mobile #touchSurface{background:radial-gradient(ellipse at 50% 42%,#410812 0,#180509 24%,#070707 66%)}
 @media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}.grain{display:none}}
 @media(max-width:700px){.threshold-index{display:none}.manifesto small{display:block;margin:18px 0}.experience-nav{left:16px;right:16px;bottom:16px;overflow:auto}.experience-nav button{white-space:nowrap}.counter{right:18px}.studio-panel{padding:42px 24px}.final{width:100%}.reveal-act span{font-size:16vw}}
+.mobile-actions{grid-template-columns:1fr}
 
