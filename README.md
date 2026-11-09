@@ -18,7 +18,7 @@ Cada intervención permanece en la escena y pasa a formar parte de una memoria s
 2. Selecciona **Conectar teléfono**.
 3. Escanea el código QR con la cámara del teléfono.
 4. Espera hasta que ambas pantallas indiquen que están conectadas.
-5. Elige **Filamento**, **Volumen** o **Membrana** y toca la superficie. Los botones inferiores permiten activar inclinación y soplido cuando el navegador solicite permiso.
+5. Elige **Filamento**, **Volumen** o **Membrana** y toca la superficie. El botón inferior permite activar el soplido cuando el navegador solicite permiso.
 6. Después de crear al menos tres huellas se habilita **Revelar**, que recorre la pieza y presenta su archivo final.
 
 Computador y teléfono comparten una sala aleatoria mediante MQTT sobre WSS. Los temas se mantienen dentro de `tacto/desborde/{sala}/#`, por lo que un usuario autorizado solamente para `tacto/#` puede operar la obra. El teléfono transmite solamente números asociados al gesto; nunca envía grabaciones, imágenes, nombres, ubicación ni contenido del micrófono.
@@ -58,9 +58,13 @@ La obra evoluciona gradualmente por **Contención**, **Tensión** y **Desborde**
 
 Las exportaciones disponibles son reales: una imagen PNG del lienzo WebGL y un archivo JSON con sesión, participantes, recuentos y eventos cronológicos. La exportación WAV todavía no está implementada y por eso no aparece como botón.
 
-### Rendimiento y modo de prueba
+### Sistema tridimensional, validación y rendimiento
 
-El panel **Materia / Calidad** permite seleccionar calidad baja, media o alta. La baja reduce resolución y partículas; la alta conserva mayor densidad de píxeles. El modo mouse usa el mismo sistema de filamentos, volúmenes y membranas que los teléfonos, permitiendo comprobar la experiencia sin hardware móvil. El indicador FPS es una medición en tiempo real y no una cifra simulada.
+El cuerpo es ahora un modelo humano continuo GLB con material físico de cristal. Los gestos se vinculan a anclajes anatómicos locales: hombros, brazos, torso, cintura, espalda, caderas y muslos. Los filamentos utilizan tubos sobre curvas Catmull–Rom; los volúmenes son mallas deformadas de crecimiento direccional; las membranas son superficies subdivididas con pliegues procedurales, inercia y respuesta al soplido.
+
+El panel **Materia / Calidad** incluye cinco vistas de validación: A maniquí, B filamentos, C volúmenes, D membranas y E composición completa. También permite revisar frontal, tres cuartos, perfil y espalda. La cámara orbital tiene amortiguación, zoom limitado y rotación automática lenta después de siete segundos sin interacción. El indicador FPS mide el rendimiento real del navegador.
+
+El maniquí utiliza el modelo `Xbot.glb` de los ejemplos oficiales de Three.js, integrado localmente y reinterpretado mediante un material de cristal propio para esta obra.
 
 ## Reflexión
 
@@ -68,7 +72,7 @@ Traducir el tacto en materia permite entender que tocar no es simplemente presio
 
 El sistema también muestra sus límites. Una pantalla no reproduce temperatura, humedad, resistencia, textura ni intención afectiva. Además, no todos los teléfonos entregan presión real, por lo que parte de la fuerza debe inferirse mediante la duración y velocidad. El soplido tampoco transmite el audio: solo se transforma en un valor de intensidad para proteger la privacidad.
 
-Dos mejoras futuras serían crear credenciales temporales distintas para cada exhibición y reemplazar la figura formada por piezas por una malla corporal continua que pueda deformarse directamente en sus vértices. También sería útil incorporar retroalimentación háptica variable para que la persona no solo vea y escuche la resistencia, sino que pueda sentirla en el teléfono.
+Dos mejoras futuras serían crear credenciales temporales distintas para cada exhibición e incorporar poses editoriales adicionales mediante animaciones del esqueleto del modelo. También sería útil incorporar retroalimentación háptica variable para que la persona no solo vea y escuche la resistencia, sino que pueda sentirla en el teléfono.
 
 ## Configurar EMQX Cloud
 
@@ -97,7 +101,7 @@ La contraseña guardada en `config.js` puede ser leída por quien inspeccione la
 1. **0–5 s:** mostrar el título DESBORDE en el computador.
 2. **5–10 s:** abrir el panel, mostrar el QR y escanearlo con el teléfono.
 3. **10–25 s:** deslizar un dedo y mantenerlo para mostrar hilos y volumen junto con sus sonidos.
-4. **25–35 s:** usar dos dedos, inclinar el teléfono y activar el soplido.
+4. **25–35 s:** usar dos dedos y activar el soplido.
 5. **35–50 s:** mostrar la figura acumulada y presionar **Revelar**.
 6. **50–60 s:** enseñar el archivo final y la opción **Reproducir memoria**.
 
@@ -105,4 +109,4 @@ Graba el teléfono y el computador en el mismo encuadre para demostrar que el co
 
 ## Ejecutar localmente
 
-Sirve esta carpeta con Live Server o cualquier servidor HTTP. Three.js se carga como módulo ES desde jsDelivr, por lo que la primera ejecución necesita conexión a internet. Para GitHub Pages, publica los archivos en la raíz del repositorio.
+Ejecuta `node dev-server.mjs` y abre `http://127.0.0.1:8081`, o sirve la carpeta con Live Server. Three.js se carga como módulo ES desde jsDelivr, por lo que la primera ejecución necesita conexión a internet. Para GitHub Pages, publica los archivos en la raíz del repositorio.
