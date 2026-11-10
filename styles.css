@@ -6,10 +6,11 @@ button{font:inherit;color:inherit}
 #scene{position:absolute;inset:0;width:100%;height:100%;touch-action:none;z-index:0}
 .grain{position:absolute;inset:0;pointer-events:none;opacity:.07;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");mix-blend-mode:screen}
 .hidden{opacity:0!important;pointer-events:none!important}
-.presence{position:absolute;inset:0;padding:4.5vw;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr auto;transition:opacity 1.2s}
+.presence{position:absolute;inset:0;padding:3.2vw 4.5vw;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr auto;transition:opacity 1.2s}
 .kicker{font:300 10px DM Mono;letter-spacing:.2em}
-.presence h1{grid-column:1/-1;align-self:center;font-size:clamp(78px,15vw,220px);line-height:.61;letter-spacing:-.085em;margin:0;font-weight:500}
-.presence h1 em{font-family:'Playfair Display';font-weight:500;color:transparent;-webkit-text-stroke:1px #d7d3cd;margin-left:12vw}
+.presence h1{grid-column:1;align-self:start;font-size:clamp(54px,8vw,118px);line-height:.78;letter-spacing:-.075em;margin:6vh 0 0;font-weight:500;z-index:2}
+.presence h1 em{display:block;font-family:'Playfair Display';font-weight:500;color:transparent;-webkit-text-stroke:1px #d7d3cd;margin:0 0 0 2.8vw}
+.presence .manifesto{grid-column:2;justify-self:end;align-self:end;width:min(360px,38vw);padding:18px 0 0 22px;border-left:1px solid #a91025;background:linear-gradient(90deg,#05050599,transparent);z-index:2}
 .manifesto{grid-column:2;display:flex;align-items:end;justify-content:space-between;gap:30px}
 .manifesto p{font-size:clamp(17px,2vw,30px);line-height:1.1;margin:0}
 .manifesto button,.final button{border:0;border-bottom:1px solid #fff;background:none;padding:12px 0;font:400 10px DM Mono;letter-spacing:.12em;cursor:pointer}

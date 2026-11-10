@@ -6,8 +6,8 @@ const $=s=>document.querySelector(s),canvas=$('#scene');
 const renderer=new THREE.WebGLRenderer({canvas,antialias:true,preserveDrawingBuffer:true,powerPreference:'high-performance'});
 renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,1.25));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;
 const scene=new THREE.Scene();scene.background=new THREE.Color(0x020202);scene.fog=new THREE.FogExp2(0x020202,.018);
-const camera=new THREE.PerspectiveCamera(34,innerWidth/innerHeight,.1,80);camera.position.set(5.2,.8,10.5);
-const controls=new OrbitControls(camera,canvas);controls.target.set(0,.1,0);controls.enableDamping=true;controls.dampingFactor=.055;controls.minDistance=7.5;controls.maxDistance=16;controls.autoRotate=true;controls.autoRotateSpeed=.22;controls.update();
+const camera=new THREE.PerspectiveCamera(30,innerWidth/innerHeight,.1,80);camera.position.set(3.7,.25,10.25);
+const controls=new OrbitControls(camera,canvas);controls.target.set(0,.05,0);controls.enableDamping=true;controls.dampingFactor=.055;controls.minDistance=8.5;controls.maxDistance=15;controls.autoRotate=false;controls.autoRotateSpeed=.16;controls.update();
 let lastCameraInput=performance.now();controls.addEventListener('start',()=>{lastCameraInput=performance.now();controls.autoRotate=false});controls.addEventListener('end',()=>lastCameraInput=performance.now());
 
 scene.add(new THREE.HemisphereLight(0xe9edf2,0x090207,1.2));
@@ -19,8 +19,8 @@ const ring=new THREE.Mesh(new THREE.TorusGeometry(2.18,.018,8,100),new THREE.Mes
 
 const sculpture=new THREE.Group(),filamentGroup=new THREE.Group(),volumeGroup=new THREE.Group(),membraneGroup=new THREE.Group();scene.add(sculpture,filamentGroup,volumeGroup,membraneGroup);
 const modelMeshes=[],anchors=new Map(),filaments=[],volumes=[],membranes=[],memory=[],counts={hilo:0,volumen:0,velo:0,toque:0},participants=new Map(),lastSeq=new Map();
-let mannequin=null,mannequinBaseY=0,selectedMaterial='auto',activePointer=null,pointerStart=0,lastSample=0,blowForce=0,audioContext=null,active=false,revealing=false,frameCounter=0,fpsTime=performance.now();
-const glass=new THREE.MeshPhysicalMaterial({color:0xaeb4bd,metalness:.05,roughness:.08,transmission:.88,transparent:true,opacity:.43,thickness:.8,ior:1.28,clearcoat:1,clearcoatRoughness:.05,attenuationColor:new THREE.Color(0x5b2730),attenuationDistance:3.2,side:THREE.DoubleSide,depthWrite:false});
+let mannequin=null,mannequinBaseY=0,mixer=null,selectedMaterial='auto',activePointer=null,pointerStart=0,lastSample=0,blowForce=0,audioContext=null,active=false,revealing=false,frameCounter=0,fpsTime=performance.now(),lastFrame=performance.now();
+const glass=new THREE.MeshPhysicalMaterial({color:0xd7d0d1,metalness:.03,roughness:.04,transmission:.94,transparent:true,opacity:.52,thickness:.42,ior:1.22,clearcoat:1,clearcoatRoughness:.025,attenuationColor:new THREE.Color(0x8d2633),attenuationDistance:4.8,side:THREE.DoubleSide,depthWrite:false});
 
 function findBone(root,tokens){let found=null;root.traverse(o=>{const n=o.name.toLowerCase();if(!found&&o.isBone&&tokens.every(t=>n.includes(t)))found=o});return found}
 function makeAnchor(name,tokens,fallback){const a=new THREE.Object3D();a.name='anchor-'+name;const bone=findBone(mannequin,tokens);if(bone)bone.add(a);else{a.position.set(...fallback);mannequin.add(a)}anchors.set(name,a)}
@@ -28,8 +28,9 @@ function anchorPoint(name){const p=new THREE.Vector3();anchors.get(name)?.getWor
 function configureModel(gltf){
   mannequin=gltf.scene;
   let box=new THREE.Box3().setFromObject(mannequin),height=box.max.y-box.min.y,scale=6.55/height;mannequin.scale.setScalar(scale);
-  box.setFromObject(mannequin);const center=box.getCenter(new THREE.Vector3());mannequin.position.set(-center.x,-3.36-box.min.y,-center.z);mannequinBaseY=mannequin.position.y;mannequin.rotation.y=-.28;
+  box.setFromObject(mannequin);const center=box.getCenter(new THREE.Vector3());mannequin.position.set(-center.x,-3.36-box.min.y,-center.z);mannequinBaseY=mannequin.position.y;mannequin.rotation.y=-.12;
   mannequin.traverse(o=>{if(o.isMesh){o.material=glass;o.castShadow=true;o.frustumCulled=false;modelMeshes.push(o)}});sculpture.add(mannequin);
+  if(gltf.animations?.length){mixer=new THREE.AnimationMixer(mannequin);const idle=gltf.animations.find(a=>/idle/i.test(a.name))||gltf.animations[0];mixer.clipAction(idle).play()}
   makeAnchor('shoulderL',['left','shoulder'],[-.9,1.8,0]);makeAnchor('shoulderR',['right','shoulder'],[.9,1.8,0]);makeAnchor('armL',['left','forearm'],[-1.1,.65,0]);makeAnchor('armR',['right','forearm'],[1.1,.65,0]);
   makeAnchor('chest',['spine','2'],[0,1.35,.18]);makeAnchor('waist',['spine'],[0,.05,.12]);makeAnchor('hipL',['left','upleg'],[-.58,-.72,0]);makeAnchor('hipR',['right','upleg'],[.58,-.72,0]);
   makeAnchor('thighL',['left','leg'],[-.42,-1.8,0]);makeAnchor('thighR',['right','leg'],[.42,-1.8,0]);makeAnchor('back',['spine','1'],[0,.9,-.35]);
@@ -46,24 +47,24 @@ function createFilament(fromName,toName,intensity=.55,spatialEnd=null){
   filaments.push({mesh,fromName,toName,intensity,growth:.01,phase:Math.random()*6});counts.hilo++;record('hilo',intensity,start)
 }
 function createFilamentFamily(a,b,intensity=.55,amount=4){for(let i=0;i<amount;i++){const offset=new THREE.Vector3((i-(amount-1)/2)*.045,Math.sin(i*2.1)*.035,i*.018);createFilament(a,b,intensity*(.9+i*.025),anchorPoint(b).add(offset))}}
-function organicGeometry(intensity,seed){const g=new THREE.SphereGeometry(.55,34,24),p=g.attributes.position;for(let i=0;i<p.count;i++){const x=p.getX(i),y=p.getY(i),z=p.getZ(i),l=1+Math.sin(y*5+seed)*.2+Math.cos(x*6-seed)*.13+Math.sin((x+z)*8)*.08;p.setXYZ(i,x*l*(.75+intensity),y*l*(1.05+intensity*1.6),z*l*(.7+intensity*.85))}g.computeVertexNormals();return g}
+function organicGeometry(intensity,seed){const g=new THREE.SphereGeometry(.42,34,24),p=g.attributes.position;for(let i=0;i<p.count;i++){const x=p.getX(i),y=p.getY(i),z=p.getZ(i),l=1+Math.sin(y*5+seed)*.16+Math.cos(x*6-seed)*.1;p.setXYZ(i,x*l*(.62+intensity*.35),y*l*(.9+intensity*.55),z*l*(.58+intensity*.4))}g.computeVertexNormals();return g}
 function createVolume(anchorName,intensity=.65,direction=new THREE.Vector3(1,.25,0)){
   if(!mannequin)return;if(volumes.length>=3){const old=volumes.shift();volumeGroup.remove(old.mesh);disposeObject(old.mesh)}
-  const origin=anchorPoint(anchorName),geo=organicGeometry(intensity,Math.random()*8),mat=new THREE.MeshPhysicalMaterial({color:volumes.length%2?0x08080a:0x670916,metalness:.34,roughness:.17,transmission:volumes.length%2?.1:.28,transparent:true,opacity:.9,thickness:1.1,clearcoat:1}),mesh=new THREE.Mesh(geo,mat);
+  const origin=anchorPoint(anchorName),geo=organicGeometry(intensity,Math.random()*8),mat=new THREE.MeshPhysicalMaterial({color:volumes.length%2?0x210207:0x740a18,metalness:.18,roughness:.12,transmission:.42,transparent:true,opacity:.68,thickness:.65,clearcoat:1,depthWrite:false}),mesh=new THREE.Mesh(geo,mat);
   mesh.position.copy(origin).add(direction.clone().normalize().multiplyScalar(.25));mesh.rotation.set(direction.z*.4,Math.atan2(direction.x,direction.z),direction.y*.5);mesh.scale.setScalar(.01);volumeGroup.add(mesh);
   volumes.push({mesh,anchorName,intensity,growth:.01,phase:Math.random()*6});filaments.forEach(f=>{if(f.fromName.includes('hip')||f.toName?.includes('hip'))f.intensity=Math.min(1,f.intensity+.12)});counts.volumen++;record('volumen',intensity,origin)
 }
 function createMembrane(names,intensity=.65,tint=0xd8d1d3){
   if(!mannequin||names.length<3)return;if(membranes.length>=5){const old=membranes.shift();membraneGroup.remove(old.mesh);disposeObject(old.mesh)}
-  const points=names.map(anchorPoint),center=points.reduce((s,p)=>s.add(p),new THREE.Vector3()).multiplyScalar(1/points.length),width=Math.max(1.6,Math.max(...points.map(p=>Math.abs(p.x-center.x)))*3.3+1.2),height=Math.max(2,Math.max(...points.map(p=>Math.abs(p.y-center.y)))*2.4+1.1);
-  const geo=new THREE.PlaneGeometry(width,height,28,22),base=geo.attributes.position.array.slice(),mat=new THREE.MeshPhysicalMaterial({color:tint,side:THREE.DoubleSide,transparent:true,opacity:.22,roughness:.28,transmission:.72,thickness:.24,depthWrite:false,clearcoat:.35}),mesh=new THREE.Mesh(geo,mat);
-  mesh.position.copy(center);mesh.lookAt(camera.position);mesh.scale.setScalar(.01);membraneGroup.add(mesh);membranes.push({mesh,base,names,intensity,growth:.01,velocity:0,phase:Math.random()*8});counts.velo++;record('velo',intensity,center)
+  const points=names.map(anchorPoint),center=points.reduce((s,p)=>s.add(p),new THREE.Vector3()).multiplyScalar(1/points.length),side=center.x<0?-1:1,width=2.3+intensity*1.15,height=3.5+intensity*1.35;
+  const geo=new THREE.PlaneGeometry(width,height,36,30),pos=geo.attributes.position;for(let i=0;i<pos.count;i++){const y=pos.getY(i),v=y/height+.5,taper=.06+.94*Math.pow(Math.sin(Math.PI*Math.max(.02,Math.min(.98,v))),.72);pos.setX(i,pos.getX(i)*taper)}const base=pos.array.slice(),color=new THREE.Color(tint),mat=new THREE.ShaderMaterial({uniforms:{uTime:{value:0},uColor:{value:color},uPhase:{value:Math.random()*8},uForce:{value:intensity}},vertexShader:`varying vec2 vUv; varying float vFold; uniform float uTime; uniform float uPhase; uniform float uForce; void main(){vUv=uv;vec3 p=position;float wave=sin(p.y*2.4+uTime*1.15+uPhase)*.16+cos(p.x*3.2-uTime*.8)*.1;p.z+=wave*(.65+uForce);p.x+=sin(p.y*1.7+uTime*.55+uPhase)*.12;vFold=wave;gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.0);}`,fragmentShader:`varying vec2 vUv; varying float vFold; uniform vec3 uColor; void main(){float shape=pow(sin(3.14159*vUv.x)*sin(3.14159*vUv.y),.34);float veins=.5+.5*sin(vUv.y*34.0+vFold*15.0);float rim=pow(1.0-abs(vUv.x-.5)*2.0,1.4);float alpha=shape*(.12+veins*.2+rim*.035);vec3 c=mix(uColor,vec3(1.0,.86,.89),.4+veins*.22);gl_FragColor=vec4(c,alpha);}`,side:THREE.DoubleSide,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending}),mesh=new THREE.Mesh(geo,mat);
+  mesh.position.copy(center).add(new THREE.Vector3(side*1.38,-.46,-.28));mesh.rotation.set(.05,side*.42,side*.08);mesh.scale.setScalar(.01);membraneGroup.add(mesh);membranes.push({mesh,base,names,intensity,growth:.01,velocity:0,phase:Math.random()*8});counts.velo++;record('velo',intensity,center)
 }
 function clearMaterials(){[filamentGroup,volumeGroup,membraneGroup].forEach(g=>g.children.slice().forEach(o=>{g.remove(o);disposeObject(o)}));filaments.length=volumes.length=membranes.length=0}
 function seedComposition(preset){if(!mannequin)return;clearMaterials();if(preset==='maniqui')return;
-  if(preset==='filamentos'||preset==='completa'){createFilamentFamily('shoulderL','waist',.62,5);createFilamentFamily('shoulderR','hipL',.72,5);createFilamentFamily('armL','hipR',.5,3)}
-  if(preset==='volumenes'||preset==='completa'){createVolume('hipR',.72,new THREE.Vector3(1,.45,-.25));createVolume('shoulderR',.58,new THREE.Vector3(.8,.7,-.15))}
-  if(preset==='membranas'||preset==='completa'){createMembrane(['shoulderL','armL','waist','hipL'],.72,0xd8d1d3);createMembrane(['shoulderR','armR','hipR'],.62,0x7e1320)}
+  if(preset==='filamentos'||preset==='completa'){createFilamentFamily('shoulderL','waist',.62,5);createFilamentFamily('shoulderR','hipL',.72,5);createFilamentFamily('armL','hipR',.5,3);for(let i=0;i<7;i++)createFilament(i%2?'shoulderR':'waist','hipL',.55,new THREE.Vector3((i%2?1:-1)*(1.5+i*.12),1.2-i*.62,-.2+i*.06))}
+  if(preset==='volumenes'||preset==='completa')createVolume('hipR',.62,new THREE.Vector3(.65,.2,-.25));
+  if(preset==='membranas'||preset==='completa'){createMembrane(['shoulderL','armL','waist','hipL'],.78,0xe1d5d7);createMembrane(['shoulderR','armR','waist','hipR'],.7,0x8b1523);createMembrane(['waist','hipL','thighL'],.68,0xd6c8cc)}
 }
 function record(type,intensity,p){memory.push({type,intensity,x:+p.x.toFixed(3),y:+p.y.toFixed(3),t:performance.now()});counts.toque++;$('#gestureCount').textContent=String(memory.length).padStart(3,'0');$('#phase').textContent=memory.length<15?'CONTENCIÓN':memory.length<35?'TENSIÓN':'DESBORDE';if(memory.length>=3){$('#reveal').disabled=false;$('#reveal').title='Revelar el archivo del gesto'}}
 
@@ -85,7 +86,7 @@ function sound(type,intensity=.5){audioContext||=new AudioContext();const now=au
 function updateMaterials(time){
   filaments.forEach(f=>{f.growth+=(1-f.growth)*.1;f.mesh.scale.setScalar(f.growth);f.mesh.rotation.z=Math.sin(time*.0018+f.phase)*(.004+f.intensity*.006+blowForce*.025)});
   volumes.forEach(v=>{v.growth+=(1-v.growth)*.075;v.mesh.scale.setScalar(v.growth*(1+Math.sin(time*.0012+v.phase)*.018))});
-  membranes.forEach(m=>{m.growth+=(1-m.growth)*.065;m.velocity=m.velocity*.92+blowForce*.018;m.mesh.scale.setScalar(m.growth);const p=m.mesh.geometry.attributes.position;for(let i=0;i<p.count;i++){const k=i*3,x=m.base[k],y=m.base[k+1],z=Math.sin(x*3.1+time*.0015+m.phase)*.09+Math.cos(y*3.7+time*.0011)*.06+Math.sin((x+y)*2.2+m.phase)*m.velocity;p.setXYZ(i,x,y,z)}p.needsUpdate=true;m.mesh.geometry.computeVertexNormals()});blowForce*=.91
+  membranes.forEach(m=>{m.growth+=(1-m.growth)*.065;m.velocity=m.velocity*.92+blowForce*.018;m.mesh.scale.setScalar(m.growth);m.mesh.material.uniforms.uTime.value=time*.001;m.mesh.material.uniforms.uForce.value=m.intensity+m.velocity*2.5});blowForce*=.91
 }
 
 const mqttCfg=window.DESBORDE_CONFIG||{},broker=String(mqttCfg.broker||'').trim()||'wss://broker.emqx.io:8084/mqtt',privateBroker=Boolean(mqttCfg.broker&&mqttCfg.username&&mqttCfg.password),topicPrefix=String(mqttCfg.topicPrefix||'tacto/desborde').replace(/^\/+|\/+$/g,''),room=crypto.randomUUID().slice(0,8),topic=`${topicPrefix}/${room}`;
@@ -110,6 +111,6 @@ $('#export').onclick=()=>{renderer.render(scene,camera);const a=document.createE
 $('#exportJson').onclick=()=>{const a=document.createElement('a');a.download='desborde-memoria.json';a.href=URL.createObjectURL(new Blob([JSON.stringify({project:'DESBORDE',room,counts,events:memory},null,2)],{type:'application/json'}));a.click()};
 $('#replay').onclick=()=>memory.slice(-40).forEach((e,i)=>setTimeout(()=>sound(e.type,e.intensity),i*80));
 
-function animate(time){requestAnimationFrame(animate);frameCounter++;if(time-fpsTime>1000){$('#fps').textContent=`${Math.round(frameCounter*1000/(time-fpsTime))} FPS`;frameCounter=0;fpsTime=time}if(performance.now()-lastCameraInput>7000&&!activePointer)controls.autoRotate=true;if(mannequin)mannequin.position.y=mannequinBaseY+Math.sin(time*.0011)*.012;updateMaterials(time);controls.update();renderer.render(scene,camera)}
+function animate(time){requestAnimationFrame(animate);const dt=Math.min(.04,(time-lastFrame)/1000||0);lastFrame=time;mixer?.update(dt);frameCounter++;if(time-fpsTime>1000){$('#fps').textContent=`${Math.round(frameCounter*1000/(time-fpsTime))} FPS`;frameCounter=0;fpsTime=time}if(performance.now()-lastCameraInput>12000&&!activePointer)controls.autoRotate=true;if(mannequin)mannequin.position.y=mannequinBaseY+Math.sin(time*.0011)*.012;updateMaterials(time);controls.update();renderer.render(scene,camera)}
 animate(0);
 addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
