@@ -109,7 +109,7 @@ Graba el teléfono y el computador en el mismo encuadre para demostrar que el co
 
 ## Créditos visuales
 
-- Imagen principal de DESBORDE: creación original generada con OpenAI ImageGen para este proyecto, basada en la dirección visual desarrollada por la autora.
+- Imagen principal y capas interactivas de maniquí, membranas y volumen: creaciones originales generadas con OpenAI ImageGen para este proyecto, basadas en la dirección visual desarrollada por la autora.
 - Maniquí interactivo: `Xbot.glb`, modelo de ejemplo del repositorio oficial de Three.js.
 
 ## Ejecutar localmente
