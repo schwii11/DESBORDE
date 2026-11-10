@@ -56,15 +56,15 @@ Cada teléfono recibe un identificador efímero y puede elegir cualquiera de los
 
 La obra evoluciona gradualmente por **Contención**, **Tensión** y **Desborde**. La revelación final se organiza en cuatro actos verificables: Silencio, Revelación, Memoria y Archivo. Puede omitirse y repetirse.
 
-Las exportaciones disponibles son reales: una imagen PNG del lienzo WebGL y un archivo JSON con sesión, participantes, recuentos y eventos cronológicos. La exportación WAV todavía no está implementada y por eso no aparece como botón.
+Las exportaciones disponibles son una imagen PNG de la composición y un archivo JSON con sala, recuentos y eventos cronológicos. La exportación WAV todavía no está implementada y por eso no aparece como botón.
 
-### Sistema tridimensional, validación y rendimiento
+### Sistema visual e interacción
 
-El cuerpo es ahora un modelo humano continuo GLB con material físico de cristal. Los gestos se vinculan a anclajes anatómicos locales: hombros, brazos, torso, cintura, espalda, caderas y muslos. Los filamentos utilizan tubos sobre curvas Catmull–Rom; los volúmenes son mallas deformadas de crecimiento direccional; las membranas son superficies subdivididas con pliegues procedurales, inercia y respuesta al soplido.
+La obra utiliza un sistema visual 2.5D por capas. Comienza solamente con un maniquí de vidrio y no añade materia hasta recibir un gesto. El desplazamiento dibuja filamentos curvos; una presión prolongada acumula volúmenes carmesí; dos dedos despliegan membranas. La posición del contacto modifica la ubicación y cada aparición alterna forma, recorte, escala y orientación.
 
-El panel **Materia / Calidad** incluye cinco vistas de validación: A maniquí, B filamentos, C volúmenes, D membranas y E composición completa. También permite revisar frontal, tres cuartos, perfil y espalda. La cámara orbital tiene amortiguación, zoom limitado y rotación automática lenta después de siete segundos sin interacción. El indicador FPS mide el rendimiento real del navegador.
+Los materiales se mueven lentamente después de aparecer para que no se perciban pegados. El soplido desplaza temporalmente las membranas. El panel **Materia** permite probar cada respuesta con el mouse y borrar la composición sin recargar la página.
 
-El maniquí utiliza el modelo `Xbot.glb` de los ejemplos oficiales de Three.js, integrado localmente y reinterpretado mediante un material de cristal propio para esta obra.
+El sonido se genera en tiempo real con Web Audio. Los filamentos producen tonos agudos y tensos; los volúmenes, sonidos graves; y las membranas combinan tono y aire filtrado. El audio se desbloquea al entrar o con el primer contacto, como exigen los navegadores móviles.
 
 ## Reflexión
 
@@ -72,7 +72,7 @@ Traducir el tacto en materia permite entender que tocar no es simplemente presio
 
 El sistema también muestra sus límites. Una pantalla no reproduce temperatura, humedad, resistencia, textura ni intención afectiva. Además, no todos los teléfonos entregan presión real, por lo que parte de la fuerza debe inferirse mediante la duración y velocidad. El soplido tampoco transmite el audio: solo se transforma en un valor de intensidad para proteger la privacidad.
 
-Dos mejoras futuras serían crear credenciales temporales distintas para cada exhibición e incorporar poses editoriales adicionales mediante animaciones del esqueleto del modelo. También sería útil incorporar retroalimentación háptica variable para que la persona no solo vea y escuche la resistencia, sino que pueda sentirla en el teléfono.
+Dos mejoras futuras serían crear credenciales temporales distintas para cada exhibición e incorporar nuevas familias visuales de membranas y volúmenes. También sería útil añadir retroalimentación háptica variable para que la persona no solo vea y escuche la resistencia, sino que pueda sentirla en el teléfono.
 
 ## Configurar EMQX Cloud
 
@@ -92,7 +92,7 @@ Si `config.js` queda vacío, la obra conserva temporalmente el broker público y
 
 ## Compatibilidad y privacidad
 
-La experiencia necesita conexión a internet y funciona mejor en versiones recientes de Chrome, Edge y Safari. En iPhone o iPad, la inclinación y el micrófono requieren permiso explícito y deben activarse mediante los botones del control. La configuración recomendada utiliza EMQX Cloud mediante WSS/TLS, una sala aleatoria y un usuario limitado a `tacto/#`. No transmite información personal.
+La experiencia necesita conexión a internet y funciona mejor en versiones recientes de Chrome, Edge y Safari. En iPhone o iPad, el micrófono requiere permiso explícito y se activa mediante el botón del control. La configuración recomendada utiliza EMQX Cloud mediante WSS/TLS, una sala aleatoria y un usuario limitado a `tacto/#`. No transmite información personal.
 
 La contraseña guardada en `config.js` puede ser leída por quien inspeccione la página publicada. Por eso debe ser exclusiva del broker, tener permisos mínimos y eliminarse al terminar el curso. Si se filtra, cambia o elimina primero el usuario en EMQX; borrarla de GitHub no invalida una clave que alguien ya copió.
 
@@ -110,8 +110,7 @@ Graba el teléfono y el computador en el mismo encuadre para demostrar que el co
 ## Créditos visuales
 
 - Imagen principal y capas interactivas de maniquí, membranas y volumen: creaciones originales generadas con OpenAI ImageGen para este proyecto, basadas en la dirección visual desarrollada por la autora.
-- Maniquí interactivo: `Xbot.glb`, modelo de ejemplo del repositorio oficial de Three.js.
 
 ## Ejecutar localmente
 
-Ejecuta `node dev-server.mjs` y abre `http://127.0.0.1:8077`, o sirve la carpeta con Live Server. Three.js se carga como módulo ES desde jsDelivr, por lo que la primera ejecución necesita conexión a internet. Para GitHub Pages, publica los archivos en la raíz del repositorio.
+Ejecuta `node dev-server.mjs` y abre `http://127.0.0.1:8077`, o sirve la carpeta con Live Server. Para GitHub Pages, publica los archivos en la raíz del repositorio.
