@@ -107,6 +107,11 @@ La contraseña guardada en `config.js` puede ser leída por quien inspeccione la
 
 Graba el teléfono y el computador en el mismo encuadre para demostrar que el control remoto transforma la experiencia en tiempo real.
 
+## Créditos visuales
+
+- Imagen principal de DESBORDE: creación original generada con OpenAI ImageGen para este proyecto, basada en la dirección visual desarrollada por la autora.
+- Maniquí interactivo: `Xbot.glb`, modelo de ejemplo del repositorio oficial de Three.js.
+
 ## Ejecutar localmente
 
-Ejecuta `node dev-server.mjs` y abre `http://127.0.0.1:8081`, o sirve la carpeta con Live Server. Three.js se carga como módulo ES desde jsDelivr, por lo que la primera ejecución necesita conexión a internet. Para GitHub Pages, publica los archivos en la raíz del repositorio.
+Ejecuta `node dev-server.mjs` y abre `http://127.0.0.1:8077`, o sirve la carpeta con Live Server. Three.js se carga como módulo ES desde jsDelivr, por lo que la primera ejecución necesita conexión a internet. Para GitHub Pages, publica los archivos en la raíz del repositorio.
