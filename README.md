@@ -64,6 +64,8 @@ La obra utiliza un sistema visual 2.5D por capas. Comienza con un maniquí de vi
 
 Los materiales se mueven lentamente después de aparecer para que no se perciban pegados. El soplido desplaza temporalmente las membranas. El panel **Materia** permite probar cada respuesta con el mouse y borrar la composición sin recargar la página.
 
+El mismo panel incluye controles de **tamaño**, **presencia** y **sensibilidad**. Tamaño y presencia actualizan en vivo toda la materia existente; sensibilidad regula la intensidad y frecuencia con que se interpreta el recorrido. Los volúmenes y membranas nacen en la coordenada exacta del contacto, mientras sus variantes cambian solamente de forma, escala y orientación.
+
 El sonido se genera en tiempo real con Web Audio. Los filamentos producen tonos agudos y tensos; los volúmenes, sonidos graves; y las membranas combinan tono y aire filtrado. El audio se desbloquea al entrar o con el primer contacto, como exigen los navegadores móviles.
 
 ## Reflexión
