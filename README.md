@@ -50,13 +50,13 @@ La intensidad, duración y posición del gesto modifican frecuencia, timbre, amp
 - Cantidad de dedos.
 - Intensidad numérica del soplido, calculada localmente sin transmitir audio.
 
-### Colaboración, revelación y exportación
+### Colaboración y revelación
 
 Cada teléfono recibe un identificador efímero. La trayectoria, el ritmo de los toques y la cantidad de dedos deciden el material, de modo que no es necesario cambiar de herramienta. El computador mantiene la escultura principal, recibe eventos de varios participantes, rechaza secuencias duplicadas y retira de la cuenta los dispositivos que dejan de enviar presencia. La paleta parte en negro, carmesí, plata y blanco, y el soplido introduce variaciones cromáticas compartidas.
 
 La obra evoluciona gradualmente por **Contención**, **Tensión** y **Desborde**. Durante la construcción las huellas permanecen tenues, pero no desaparecen. Al revelar, la escena se limpia y reconstruye todos los eventos en orden, con imagen y sonido claros. Este timelapse puede omitirse y repetirse desde el archivo final.
 
-Las exportaciones disponibles son una imagen PNG de la composición y un archivo JSON con sala, recuentos y eventos cronológicos. La exportación WAV todavía no está implementada y por eso no aparece como botón.
+Al terminar, la pantalla permite reproducir nuevamente la memoria del proceso, volver a la obra sin borrar lo construido o comenzar una composición completamente nueva. Se eliminaron las exportaciones experimentales porque no representaban de forma fiel la experiencia audiovisual.
 
 ### Sistema visual e interacción
 
