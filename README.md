@@ -32,7 +32,7 @@ Computador y teléfono comparten una sala aleatoria mediante MQTT sobre WSS. Los
 | Deslizar un dedo | Dibuja filamentos curvos | Tono agudo y tenso | Un contacto individual deja una trayectoria |
 | Tres toques rápidos | Genera un volumen tridimensional | Pulso grave sostenido | La repetición transforma el contacto en acumulación |
 | Dos dedos | Abre una membrana translúcida | Fricción de velo | La suma de dos contactos expande el cuerpo |
-| Soplido al micrófono | Agita las membranas y asigna colores aleatorios a la materia | Ruido de aire filtrado | Una fuerza invisible altera movimiento y estado cromático |
+| Soplido al micrófono | Produce un pulso y cambia claramente el color de la materia presente y de los elementos posteriores del timelapse | Ruido de aire filtrado | Una fuerza invisible altera y mantiene un nuevo estado cromático |
 | Gestos simultáneos de dos teléfonos | Une las posiciones mediante un filamento celeste compartido | Tono ascendente de vínculo | La colaboración produce una forma que ninguna persona genera sola |
 | Revelar | Reconstruye cada huella en orden y con máxima visibilidad | Reproduce el sonido asociado a cada evento | La acumulación se convierte en memoria y archivo |
 
