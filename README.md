@@ -33,11 +33,12 @@ Computador y teléfono comparten una sala aleatoria mediante MQTT sobre WSS. Los
 | Tres toques rápidos | Genera un volumen tridimensional | Pulso grave sostenido | La repetición transforma el contacto en acumulación |
 | Dos dedos | Abre una membrana translúcida | Fricción de velo | La suma de dos contactos expande el cuerpo |
 | Soplido al micrófono | Agita las membranas y asigna colores aleatorios a la materia | Ruido de aire filtrado | Una fuerza invisible altera movimiento y estado cromático |
+| Gestos simultáneos de dos teléfonos | Une las posiciones mediante un filamento celeste compartido | Tono ascendente de vínculo | La colaboración produce una forma que ninguna persona genera sola |
 | Revelar | Reconstruye cada huella en orden y con máxima visibilidad | Reproduce el sonido asociado a cada evento | La acumulación se convierte en memoria y archivo |
 
 ### Sonidos y autoría
 
-La plataforma utiliza seis respuestas sonoras: **filamento suave**, **filamento tenso**, **volumen grave**, **membrana**, **soplido** y una señal ascendente de **revelación**. Los dos estados del filamento pertenecen a una misma familia dinámica, pero se perciben de forma diferente según la velocidad e intensidad. Todas fueron programadas específicamente para DESBORDE con Web Audio API mediante osciladores, ruido sintetizado, filtros y envolventes. Son de autoría propia y no utilizan grabaciones ni muestras externas.
+La plataforma utiliza siete respuestas sonoras: **filamento suave**, **filamento tenso**, **volumen grave**, **membrana**, **soplido**, **vínculo colaborativo** y una señal ascendente de **revelación**. Los dos estados del filamento pertenecen a una misma familia dinámica, pero se perciben de forma diferente según la velocidad e intensidad. Todas fueron programadas específicamente para DESBORDE con Web Audio API mediante osciladores, ruido sintetizado, filtros y envolventes. Son de autoría propia y no utilizan grabaciones ni muestras externas.
 
 La intensidad, duración y posición del gesto modifican frecuencia, timbre, amplitud y ubicación estéreo. De esta manera el sonido no funciona como acompañamiento, sino como otra manifestación de la misma acción táctil.
 
@@ -49,10 +50,11 @@ La intensidad, duración y posición del gesto modifican frecuencia, timbre, amp
 - Presión cuando el dispositivo la entrega; en equipos sin presión se aproxima mediante duración y velocidad.
 - Cantidad de dedos.
 - Intensidad numérica del soplido, calculada localmente sin transmitir audio.
+- Vibración háptica local para diferenciar contacto, filamento, volumen, membrana y soplido en dispositivos compatibles.
 
 ### Colaboración y revelación
 
-Cada teléfono recibe un identificador efímero. La trayectoria, el ritmo de los toques y la cantidad de dedos deciden el material, de modo que no es necesario cambiar de herramienta. El computador mantiene la escultura principal, recibe eventos de varios participantes, rechaza secuencias duplicadas y retira de la cuenta los dispositivos que dejan de enviar presencia. La paleta parte en negro, carmesí, plata y blanco, y el soplido introduce variaciones cromáticas compartidas.
+Cada teléfono recibe un identificador efímero. La trayectoria, el ritmo de los toques y la cantidad de dedos deciden el material, de modo que no es necesario cambiar de herramienta. El computador mantiene la escultura principal, recibe eventos de varios participantes, rechaza secuencias duplicadas y retira de la cuenta los dispositivos que dejan de enviar presencia. Cuando dos teléfonos gesticulan dentro del mismo intervalo, el sistema registra un filamento celeste entre ambas posiciones y un sonido de vínculo. Así, colaborar modifica realmente el resultado en vez de limitarse a sumar gestos individuales. La paleta parte en negro, carmesí, plata y blanco, y el soplido introduce variaciones cromáticas compartidas.
 
 La obra evoluciona gradualmente por **Contención**, **Tensión** y **Desborde**. Durante la construcción la imagen permanece oculta: el sistema guarda posiciones, gestos, sonidos y soplidos sin dibujar la composición. Al revelar, reconstruye por primera vez todos los eventos en orden, incluidos los cambios cromáticos, con imagen y sonido claros. Este timelapse puede omitirse y repetirse desde el archivo final.
 
@@ -74,7 +76,7 @@ Traducir el tacto en materia permite entender que tocar no es simplemente presio
 
 El sistema también muestra sus límites. Una pantalla no reproduce temperatura, humedad, resistencia, textura ni intención afectiva. Además, no todos los teléfonos entregan presión real, por lo que parte de la fuerza debe inferirse mediante la duración y velocidad. El soplido tampoco transmite el audio: solo se transforma en un valor de intensidad para proteger la privacidad.
 
-Dos mejoras futuras serían crear credenciales temporales distintas para cada exhibición e incorporar nuevas familias visuales de membranas y volúmenes. También sería útil añadir retroalimentación háptica variable para que la persona no solo vea y escuche la resistencia, sino que pueda sentirla en el teléfono.
+Dos mejoras futuras serían crear credenciales temporales distintas para cada exhibición e incorporar nuevas familias visuales de membranas y volúmenes. También sería útil utilizar la inclinación del teléfono para desplazar la materia revelada y ampliar la respuesta háptica con intensidades basadas en presión real cuando el dispositivo la entregue.
 
 ## Configurar EMQX Cloud
 
