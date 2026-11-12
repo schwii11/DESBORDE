@@ -20,11 +20,10 @@
 </section>
 <section id="controller" class="hidden">
 <div class="mobile-copy">
-<p class="kicker">SUPERFICIE TÁCTIL</p>
-<b id="gesture">DESLIZA PARA TENSAR HILOS</b>
-<small id="mobileChallenge">ESPERANDO DESAFÍO</small>
+<p class="kicker">SIGUE LA INSTRUCCIÓN</p>
+<b id="mobileChallenge">ESPERANDO DESAFÍO</b>
+<small id="gesture">EL COMPUTADOR INDICARÁ EL PRIMER GESTO</small>
 </div>
-<div class="mobile-materials finger-map" aria-label="Relación entre gesto y materia"><span>DESLIZA<br><b>FILAMENTO</b></span><span>3 TOQUES<br><b>VOLUMEN 3D</b></span><span>2 DEDOS<br><b>MEMBRANA</b></span></div>
 <div id="touchSurface">
 <div id="challengeTarget" class="hidden"><span></span></div>
 <div class="cross x">
@@ -33,18 +32,16 @@
 </div>
 <span id="trace">
 </span>
-<p>DESLIZA · 3 TOQUES · DOS DEDOS · SOPLA</p>
+<p>REALIZA EL GESTO DENTRO DEL CÍRCULO</p>
 <i id="mobileChallengeTimer"></i>
 </div>
 <div class="mobile-metrics">
 <span>PARTICIPANTE <b id="participantId">—</b></span>
-<span>DEDOS <b id="fingers">0</b>
-</span>
-<span>INTENSIDAD <b id="intensity">0.00</b>
-</span>
+<span class="technical-metric">DEDOS <b id="fingers">0</b></span>
+<span class="technical-metric">INTENSIDAD <b id="intensity">0.00</b></span>
 </div>
 <div class="mobile-actions">
-<button id="mic">ACTIVAR SOPLIDO</button>
+<button id="mic" class="hidden">ACTIVAR MICRÓFONO Y SOPLAR</button>
 </div>
 <div class="air">
 <i id="airLevel">
