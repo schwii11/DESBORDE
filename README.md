@@ -44,7 +44,9 @@ La intensidad, duración y tipo de gesto modifican frecuencia, timbre y amplitud
 
 ### Modo de desafíos
 
-Al conectarse un teléfono comienza una secuencia formada por filamento, volumen, membrana y soplido en orden aleatorio. Para los tres gestos táctiles aparece una zona circular en una coordenada diferente; la persona tiene 8 segundos para ejecutar allí la acción solicitada. Si el tiempo termina, la zona cambia y el fallo se conserva. El desafío de soplido muestra entonces el botón del micrófono y solicita soplar dentro de la misma ventana temporal.
+Al conectarse un teléfono comienza una secuencia de ocho desafíos dividida en dos rondas. Cada ronda incluye filamento, volumen, membrana y soplido en un orden aleatorio. La primera funciona como aprendizaje: entrega 9 segundos y zonas táctiles amplias. La segunda reduce el tiempo a 7 segundos y utiliza objetivos más pequeños. Así, la interacción completa dura aproximadamente entre uno y dos minutos según la cantidad de intentos.
+
+Para los tres gestos táctiles aparece una zona circular en una coordenada diferente. Si el tiempo termina, la zona cambia y el fallo se conserva. En cada ronda, el desafío de soplido muestra el botón del micrófono únicamente cuando corresponde y solicita soplar dentro de la misma ventana temporal.
 
 La plataforma no elimina los errores. Durante la revelación automática, los intentos fuera de zona aparecen tenues, los tiempos agotados interrumpen brevemente el recorrido y los aciertos aparecen con mayor definición. De esta forma, el resultado final muestra la búsqueda completa y no solamente la solución correcta.
 
