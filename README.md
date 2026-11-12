@@ -1,8 +1,8 @@
 # DESBORDE — El cuerpo no tiene una forma definitiva
 
-**Plataforma publicada:** https://schwii11.github.io/touch-me/
+**Plataforma publicada:** https://schwii11.github.io/DESBORDE/
 
-**Repositorio:** https://github.com/schwii11/touch-me
+**Repositorio:** https://github.com/schwii11/DESBORDE
 
 ## Concepto
 
@@ -14,11 +14,11 @@ Cada intervención permanece en la escena y pasa a formar parte de una memoria s
 
 ### Conexión del teléfono
 
-1. Abre la plataforma publicada en un computador y presiona **Toca para transformarlo**.
+1. Abre la plataforma publicada en un computador y presiona **Entrar en la experiencia**.
 2. Selecciona **Conectar teléfono**.
 3. Escanea el código QR con la cámara del teléfono.
 4. Espera hasta que ambas pantallas indiquen que están conectadas.
-5. Desliza para crear filamentos, toca tres veces rápido para crear volumen y usa dos dedos para abrir membranas. El botón inferior activa el soplido, que mueve y cambia aleatoriamente el color de la materia.
+5. Desliza para registrar filamentos, toca tres veces rápido para registrar volumen y usa dos dedos para registrar membranas. El botón inferior activa el soplido y guarda un futuro cambio cromático.
 6. Después de crear al menos tres huellas se habilita **Revelar**, que reconstruye la pieza completa como un timelapse audiovisual y presenta su archivo final.
 
 Computador y teléfono comparten una sala aleatoria mediante MQTT sobre WSS. Los temas se mantienen dentro de `tacto/desborde/{sala}/#`, por lo que un usuario autorizado solamente para `tacto/#` puede operar la obra. El teléfono transmite solamente números asociados al gesto; nunca envía grabaciones, imágenes, nombres, ubicación ni contenido del micrófono.
@@ -27,7 +27,7 @@ Computador y teléfono comparten una sala aleatoria mediante MQTT sobre WSS. Los
 
 | Gesto o dato | Transformación visual | Transformación sonora | Sentido dentro del concepto |
 |---|---|---|---|
-| Posición X/Y y deslizamiento | Traza hilos sobre la zona recorrida del cuerpo | Hilo suave ascendente y paneo según la posición horizontal | El recorrido deja una huella espacial |
+| Posición X/Y y deslizamiento | Registra hilos sobre la zona recorrida del cuerpo | Hilo suave ascendente | El recorrido deja una huella espacial |
 | Deslizamiento rápido o intenso | El hilo aumenta su espesor y tensión | Hilo tenso, más brillante y ascendente | La fuerza vuelve visible la tensión |
 | Deslizar un dedo | Dibuja filamentos curvos | Tono agudo y tenso | Un contacto individual deja una trayectoria |
 | Tres toques rápidos | Genera un volumen tridimensional | Pulso grave sostenido | La repetición transforma el contacto en acumulación |
@@ -37,7 +37,7 @@ Computador y teléfono comparten una sala aleatoria mediante MQTT sobre WSS. Los
 
 ### Sonidos y autoría
 
-La plataforma utiliza tres familias sonoras: **filamento**, **volumen** y **membrana/aire**. Fueron programadas específicamente para DESBORDE con Web Audio API mediante osciladores, ruido sintetizado, filtros y envolventes. Son de autoría propia y no utilizan grabaciones ni muestras externas.
+La plataforma utiliza seis respuestas sonoras: **filamento suave**, **filamento tenso**, **volumen grave**, **membrana**, **soplido** y una señal ascendente de **revelación**. Los dos estados del filamento pertenecen a una misma familia dinámica, pero se perciben de forma diferente según la velocidad e intensidad. Todas fueron programadas específicamente para DESBORDE con Web Audio API mediante osciladores, ruido sintetizado, filtros y envolventes. Son de autoría propia y no utilizan grabaciones ni muestras externas.
 
 La intensidad, duración y posición del gesto modifican frecuencia, timbre, amplitud y ubicación estéreo. De esta manera el sonido no funciona como acompañamiento, sino como otra manifestación de la misma acción táctil.
 
@@ -54,17 +54,17 @@ La intensidad, duración y posición del gesto modifican frecuencia, timbre, amp
 
 Cada teléfono recibe un identificador efímero. La trayectoria, el ritmo de los toques y la cantidad de dedos deciden el material, de modo que no es necesario cambiar de herramienta. El computador mantiene la escultura principal, recibe eventos de varios participantes, rechaza secuencias duplicadas y retira de la cuenta los dispositivos que dejan de enviar presencia. La paleta parte en negro, carmesí, plata y blanco, y el soplido introduce variaciones cromáticas compartidas.
 
-La obra evoluciona gradualmente por **Contención**, **Tensión** y **Desborde**. Durante la construcción las huellas permanecen tenues, pero no desaparecen. Al revelar, la escena se limpia y reconstruye todos los eventos en orden, con imagen y sonido claros. Este timelapse puede omitirse y repetirse desde el archivo final.
+La obra evoluciona gradualmente por **Contención**, **Tensión** y **Desborde**. Durante la construcción la imagen permanece oculta: el sistema guarda posiciones, gestos, sonidos y soplidos sin dibujar la composición. Al revelar, reconstruye por primera vez todos los eventos en orden, incluidos los cambios cromáticos, con imagen y sonido claros. Este timelapse puede omitirse y repetirse desde el archivo final.
 
 Al terminar, la pantalla permite reproducir nuevamente la memoria del proceso, volver a la obra sin borrar lo construido o comenzar una composición completamente nueva. Se eliminaron las exportaciones experimentales porque no representaban de forma fiel la experiencia audiovisual.
 
 ### Sistema visual e interacción
 
-La obra utiliza un sistema visual 2.5D por capas. Comienza con un maniquí de vidrio tenue y centrado, sin materia añadida. Deslizar dibuja filamentos curvos, tres toques rápidos acumulan volumen 3D y dos dedos despliegan membranas. La posición del contacto modifica la ubicación y cada aparición alterna forma, recorte, escala y orientación. Soplar conserva la forma pero modifica aleatoriamente su color.
+La obra utiliza un sistema visual 2.5D por capas. Durante la captura el maniquí y la materia permanecen ocultos. Deslizar registra filamentos curvos, tres toques rápidos registran volumen 3D y dos dedos registran membranas. La posición del contacto determina la ubicación y cada aparición alterna forma, recorte, escala y orientación. Soplar registra un cambio cromático que aparece en su momento correspondiente durante la revelación.
 
-Los materiales se mueven lentamente después de aparecer para que no se perciban pegados. El soplido desplaza temporalmente las membranas. El panel **Materia** permite probar cada respuesta con el mouse y borrar la composición sin recargar la página.
+Durante la revelación, los materiales se mueven lentamente después de aparecer para que no se perciban pegados. El soplido produce un pulso y modifica el color de la composición. El panel **Materia** permite elegir qué respuesta registrar con el mouse y borrar la memoria sin recargar la página.
 
-El mismo panel incluye controles de **tamaño**, **presencia** y **sensibilidad**. Tamaño y presencia actualizan en vivo toda la materia existente; sensibilidad regula la intensidad y frecuencia con que se interpreta el recorrido. Los volúmenes y membranas nacen en la coordenada exacta del contacto, mientras sus variantes cambian solamente de forma, escala y orientación.
+El mismo panel incluye controles de **tamaño**, **presencia** y **sensibilidad**. Tamaño y presencia se guardan con los nuevos eventos y se aplican cuando estos aparecen en la revelación; sensibilidad regula la intensidad y frecuencia con que se registra el recorrido. Los volúmenes y membranas nacen en la coordenada del contacto, mientras sus variantes cambian de forma, escala y orientación.
 
 El sonido se genera en tiempo real con Web Audio. Los filamentos producen tonos agudos y tensos; los volúmenes, sonidos graves; y las membranas combinan tono y aire filtrado. El audio se desbloquea al entrar o con el primer contacto, como exigen los navegadores móviles.
 
@@ -103,7 +103,7 @@ La contraseña guardada en `config.js` puede ser leída por quien inspeccione la
 1. **0–5 s:** mostrar el título DESBORDE en el computador.
 2. **5–10 s:** abrir el panel, mostrar el QR y escanearlo con el teléfono.
 3. **10–25 s:** deslizar, tocar tres veces rápido y usar dos dedos para construir filamentos, volúmenes y membranas.
-4. **25–35 s:** activar el soplido y mostrar cómo cambia el color mientras la materia permanece casi oculta.
+4. **25–35 s:** activar el soplido y mostrar en el teléfono que el gesto fue registrado, mientras la obra continúa oculta.
 5. **35–50 s:** presionar **Revelar** y mostrar el timelapse audiovisual de todas las huellas.
 6. **50–60 s:** enseñar el archivo final y la opción **Reproducir memoria**.
 
@@ -111,7 +111,7 @@ Graba el teléfono y el computador en el mismo encuadre para demostrar que el co
 
 ## Créditos visuales
 
-- Imagen principal y capas interactivas de maniquí, membranas y volumen: creaciones originales generadas con OpenAI ImageGen para este proyecto, basadas en la dirección visual desarrollada por la autora.
+- Capas interactivas de maniquí, membranas y volumen: creaciones originales generadas con OpenAI ImageGen para este proyecto, basadas en la dirección visual desarrollada por la autora.
 
 ## Ejecutar localmente
 
