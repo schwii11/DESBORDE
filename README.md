@@ -18,8 +18,8 @@ Cada intervención permanece en la escena y pasa a formar parte de una memoria s
 2. Selecciona **Conectar teléfono**.
 3. Escanea el código QR con la cámara del teléfono.
 4. Espera hasta que ambas pantallas indiquen que están conectadas.
-5. Desliza para registrar filamentos, toca tres veces rápido para registrar volumen y usa dos dedos para registrar membranas. El botón inferior activa el soplido y guarda un futuro cambio cromático.
-6. Después de crear al menos tres huellas se habilita **Revelar**, que reconstruye la pieza completa como un timelapse audiovisual y presenta su archivo final.
+5. Sigue la zona aleatoria que aparece en el teléfono y completa el gesto solicitado antes de que termine el tiempo: deslizar, tocar tres veces, mantener dos dedos o soplar.
+6. Si no aciertas, el intento queda guardado y la zona cambia. Cuando completas los cuatro desafíos, la revelación comienza automáticamente y reconstruye todos los intentos como un timelapse audiovisual.
 
 Computador y teléfono comparten una sala aleatoria mediante MQTT sobre WSS. Los temas se mantienen dentro de `tacto/desborde/{sala}/#`, por lo que un usuario autorizado solamente para `tacto/#` puede operar la obra. El teléfono transmite solamente números asociados al gesto; nunca envía grabaciones, imágenes, nombres, ubicación ni contenido del micrófono.
 
@@ -40,7 +40,13 @@ Computador y teléfono comparten una sala aleatoria mediante MQTT sobre WSS. Los
 
 La plataforma utiliza siete respuestas sonoras: **filamento suave**, **filamento tenso**, **volumen grave**, **membrana**, **soplido**, **vínculo colaborativo** y una señal ascendente de **revelación**. Los dos estados del filamento pertenecen a una misma familia dinámica, pero se perciben de forma diferente según la velocidad e intensidad. Todas fueron programadas específicamente para DESBORDE con Web Audio API mediante osciladores, ruido sintetizado, filtros y envolventes. Son de autoría propia y no utilizan grabaciones ni muestras externas.
 
-La intensidad, duración y posición del gesto modifican frecuencia, timbre, amplitud y ubicación estéreo. De esta manera el sonido no funciona como acompañamiento, sino como otra manifestación de la misma acción táctil.
+La intensidad, duración y tipo de gesto modifican frecuencia, timbre y amplitud. De esta manera el sonido no funciona como acompañamiento, sino como otra manifestación de la misma acción táctil.
+
+### Modo de desafíos
+
+Al conectarse un teléfono comienza una secuencia formada por filamento, volumen, membrana y soplido en orden aleatorio. Para los tres gestos táctiles aparece una zona circular en una coordenada diferente; la persona tiene 6,5 segundos para ejecutar allí la acción solicitada. Si el tiempo termina, la zona cambia y el fallo se conserva. El desafío de soplido solicita activar el micrófono y soplar dentro de la misma ventana temporal.
+
+La plataforma no elimina los errores. Durante la revelación automática, los intentos fuera de zona aparecen tenues, los tiempos agotados interrumpen brevemente el recorrido y los aciertos aparecen con mayor definición. De esta forma, el resultado final muestra la búsqueda completa y no solamente la solución correcta.
 
 ### Datos del teléfono utilizados
 
@@ -56,7 +62,7 @@ La intensidad, duración y posición del gesto modifican frecuencia, timbre, amp
 
 Cada teléfono recibe un identificador efímero. La trayectoria, el ritmo de los toques y la cantidad de dedos deciden el material, de modo que no es necesario cambiar de herramienta. El computador mantiene la escultura principal, recibe eventos de varios participantes, rechaza secuencias duplicadas y retira de la cuenta los dispositivos que dejan de enviar presencia. Cuando dos teléfonos gesticulan dentro del mismo intervalo, el sistema registra un filamento celeste entre ambas posiciones y un sonido de vínculo. Así, colaborar modifica realmente el resultado en vez de limitarse a sumar gestos individuales. La paleta parte en negro, carmesí, plata y blanco, y el soplido introduce variaciones cromáticas compartidas.
 
-La obra evoluciona gradualmente por **Contención**, **Tensión** y **Desborde**. Durante la construcción la imagen permanece oculta: el sistema guarda posiciones, gestos, sonidos y soplidos sin dibujar la composición. Al revelar, reconstruye por primera vez todos los eventos en orden, incluidos los cambios cromáticos, con imagen y sonido claros. Este timelapse puede omitirse y repetirse desde el archivo final.
+La obra evoluciona gradualmente por **Contención**, **Tensión** y **Desborde**. Durante la construcción la imagen permanece oculta: el sistema guarda posiciones, gestos, errores, sonidos y soplidos sin dibujar la composición. Al completar los desafíos, reconstruye automáticamente todos los eventos en orden, incluidos los intentos fallidos y cambios cromáticos. Este timelapse puede omitirse y repetirse desde el archivo final.
 
 Al terminar, la pantalla permite reproducir nuevamente la memoria del proceso, volver a la obra sin borrar lo construido o comenzar una composición completamente nueva. Se eliminaron las exportaciones experimentales porque no representaban de forma fiel la experiencia audiovisual.
 
