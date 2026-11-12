@@ -50,7 +50,7 @@ La intensidad, duración y posición del gesto modifican frecuencia, timbre, amp
 - Presión cuando el dispositivo la entrega; en equipos sin presión se aproxima mediante duración y velocidad.
 - Cantidad de dedos.
 - Intensidad numérica del soplido, calculada localmente sin transmitir audio.
-- Vibración háptica local para diferenciar contacto, filamento, volumen, membrana y soplido en dispositivos compatibles.
+- Respuesta háptica local para diferenciar contacto, filamento, volumen, membrana y soplido. Android utiliza patrones de vibración; cuando el navegador no ofrece vibración, como ocurre en Safari para iPhone, la plataforma activa automáticamente un pulso visual de color y una señal sonora breve en el teléfono.
 
 ### Colaboración y revelación
 
